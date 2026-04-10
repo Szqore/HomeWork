@@ -1,0 +1,373 @@
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
+
+// ========== ПЕРЕЧИСЛЕНИЯ ==========
+enum Race {
+    HUMAN("Человек"), ORC("Орк"), ELF("Эльф"), DEMON("Лысый черт");
+    private final String name;
+    Race(String name) { this.name = name; }
+    public String getName() { return name; }
+}
+
+enum WeaponType {
+    SWORD("Меч", 10, 5), AXE("Топор Великого не повторомивого велечайщего самого крутого прям вообще крутой как сам ИванЗоло2004", 15, -5), BOW("Лук", 8, 15),
+    BEER_BOTTLE("Пивная бутылка", 20, -10), LENIVETS_CLAW("Пиво темное", 25, 0);
+    private final String name;
+    private final int damageBonus;
+    private final int accuracyBonus;
+    WeaponType(String name, int dmg, int acc) { this.name = name; this.damageBonus = dmg; this.accuracyBonus = acc; }
+    public String getName() { return name; }
+    public int getDamageBonus() { return damageBonus; }
+    public int getAccuracyBonus() { return accuracyBonus; }
+}
+
+enum ArmorType {
+    RAGS("Лохмотья", 0, 0), LEATHER("Geynal", 5, -2),
+    CHAINMAIL("Кольчуга", 10, -5), PLATE("Латы", 15, -10),
+    LYSINA("Лысина Владимира", 50, 20); // Имба-броня
+
+    private final String name;
+    private final int defense;
+    private final int dodgePenalty;
+    ArmorType(String name, int def, int pen) { this.name = name; this.defense = def; this.dodgePenalty = pen; }
+    public String getName() { return name; }
+    public int getDefense() { return defense; }
+    public int getDodgePenalty() { return dodgePenalty; }
+}
+
+// ========== ПРЕДМЕТЫ ==========
+class Weapon {
+    private final WeaponType type;
+    public Weapon(WeaponType type) { this.type = type; }
+    public int getDamageBonus() { return type.getDamageBonus(); }
+    public int getAccuracyBonus() { return type.getAccuracyBonus(); }
+    public String getName() { return type.getName(); }
+}
+
+class Armor {
+    private final ArmorType type;
+    public Armor(ArmorType type) { this.type = type; }
+    public int getDefense() { return type.getDefense(); }
+    public int getDodgePenalty() { return type.getDodgePenalty(); }
+    public String getName() { return type.getName(); }
+}
+
+// ========== БАЗОВЫЙ АБСТРАКТНЫЙ КЛАСС ГЕРОЯ ==========
+abstract class Hero {
+    protected String name;
+    protected Race race;
+    protected int health;
+    protected int maxHealth;
+    protected int baseDamage;
+    protected int baseAccuracy;
+    protected Weapon weapon;
+    protected Armor armor;
+    protected Random rand = new Random();
+    protected Vyacheslav host = Vyacheslav.getInstance();
+
+    public Hero(String name, Race race, int health, int damage, int accuracy) {
+        this.name = name;
+        this.race = race;
+        this.maxHealth = health;
+        this.health = health;
+        this.baseDamage = damage;
+        this.baseAccuracy = accuracy;
+        this.weapon = new Weapon(WeaponType.SWORD); // По умолчанию
+        this.armor = new Armor(ArmorType.RAGS);     // По умолчанию
+    }
+
+    public void equipWeapon(Weapon w) { this.weapon = w; }
+    public void equipArmor(Armor a) { this.armor = a; }
+
+    public boolean isAlive() { return health > 0; }
+    public String getName() { return name; }
+    public int getHealth() { return health; }
+    public int getMaxHealth() { return maxHealth; }
+
+    public void takeDamage(int dmg) {
+        int reduced = Math.max(1, dmg - armor.getDefense());
+        health -= reduced;
+        if (health < 0) health = 0;
+    }
+
+    public void reset() { health = maxHealth; }
+    public void heal(int amount) { health = Math.min(maxHealth, health + amount); }
+
+    // Обычная атака с шансом промаха
+    public boolean attack(Hero enemy) {
+        int totalAccuracy = baseAccuracy + weapon.getAccuracyBonus() - enemy.armor.getDodgePenalty();
+        int hit = rand.nextInt(100);
+
+        if (hit < totalAccuracy) {
+            int dmg = baseDamage + weapon.getDamageBonus() + rand.nextInt(10);
+            enemy.takeDamage(dmg);
+            host.commentAttack(this, enemy, dmg, true);
+            return true;
+        } else {
+            host.commentAttack(this, enemy, 0, false);
+            return false;
+        }
+    }
+
+    // Рофленая способность (у каждой расы своя)
+    public abstract void useRoflAbility(Hero enemy);
+
+    public String getFullDescription() {
+        return name + " [" + race.getName() + "] | Оружие: " + weapon.getName() +
+                " | Броня: " + armor.getName() + " | HP: " + health + "/" + maxHealth;
+    }
+}
+
+// ========== НАСЛЕДНИКИ ==========
+
+// ---------- ОРК (тупой, но сильный) ----------
+class Orc extends Hero {
+    public Orc(String name) {
+        super(name, Race.ORC, 120, 20, 60);
+        equipWeapon(new Weapon(WeaponType.AXE));
+        equipArmor(new Armor(ArmorType.LEATHER));
+    }
+
+    @Override
+    public void useRoflAbility(Hero enemy) {
+        int choice = rand.nextInt(3);
+        switch (choice) {
+            case 0:
+                host.commentAction(name + " ПЫТАЕТСЯ ДУМАТЬ... НО НЕ МОЖЕТ! Сам себе наносит 5 урона от перенапряжения!");
+                takeDamage(5);
+                break;
+            case 1:
+                int dmg = baseDamage + 15;
+                enemy.takeDamage(dmg);
+                takeDamage(8);
+                host.commentAction(name + " ВПАДАЕТ В БЕРСЕРК! Наносит " + dmg + " урона " + enemy.getName() + ", но бьётся головой об стену (-8 HP)!");
+                break;
+            case 2:
+                host.commentAction(name + " ЖРЁТ ГРИБЫ?... " + (rand.nextBoolean() ? "ЛЕЧЕБНЫЕ! +15 HP!" : "ЯДОВИТЫЕ! -10 HP!"));
+                if (rand.nextBoolean()) heal(15); else takeDamage(10);
+                break;
+        }
+    }
+}
+
+// ---------- ЭЛЬФ (высокомерный лучник) ----------
+class Elf extends Hero {
+    public Elf(String name) {
+        super(name, Race.ELF, 90, 15, 80);
+        equipWeapon(new Weapon(WeaponType.BOW));
+        equipArmor(new Armor(ArmorType.LEATHER));
+    }
+
+    @Override
+    public void useRoflAbility(Hero enemy) {
+        int choice = rand.nextInt(3);
+        switch (choice) {
+            case 0:
+                host.commentAction(name + " СМОТРИТ СВЫСОКА на " + enemy.getName() + ". " + enemy.getName() + " чувствует себя ничтожеством! -5 HP!");
+                enemy.takeDamage(5);
+                break;
+            case 1:
+                host.commentAction(name + " ИСПОЛЬЗУЕТ ЛЕСНУЮ МАГИЮ! +10 HP!");
+                heal(10);
+                break;
+            case 2:
+                host.commentAction(name + " СПОТЫКАЕТСЯ О КОРЕНЬ, пока пытается выглядеть круто. -5 HP к самооценке и здоровью!");
+                takeDamage(5);
+                break;
+        }
+    }
+}
+
+// ---------- ВЛАДИМИР (ЛЫСЫЙ ЧЁРТ) - ИМБА ----------
+class Vladimir extends Hero {
+    private int beerCount = 0;
+
+    public Vladimir() {
+        super("Владимир", Race.DEMON, 250, 30, 90);
+        equipWeapon(new Weapon(WeaponType.LENIVETS_CLAW));
+        equipArmor(new Armor(ArmorType.LYSINA)); // Имба-броня
+    }
+
+    @Override
+    public void useRoflAbility(Hero enemy) {
+        int choice = rand.nextInt(5);
+        switch (choice) {
+            case 0:
+                beerCount++;
+                int beerDmg = 25 + beerCount * 5;
+                enemy.takeDamage(beerDmg);
+                host.commentAction(name + " ОТКРЫВАЕТ ПИВО и ОБЛИВАЕТ " + enemy.getName() + "! -" + beerDmg + " HP! (Пиво №" + beerCount + ")");
+                break;
+            case 1:
+                int psycheDmg = 35;
+                enemy.takeDamage(psycheDmg);
+                host.commentAction(name + " ПРИМЕНЯЕТ CАЛФЕТКА 1000 ЧЕРТЕЙ! " + enemy.getName() + " в шоке! -" + psycheDmg + " HP!");
+                heal(20);
+                host.commentAction(name + " ПЬЕТ ТЕМНОЕ ПИВО ,ТАК КАК ОН ЧЕРТ! +20 HP!");
+                break;
+            case 2:
+                host.commentAction(name + " ЗОВЁТ ПАВЛА! Тот кусает " + enemy.getName() + " за баклажанчик! -20 HP!");
+                enemy.takeDamage(20);
+                break;
+            case 3:
+                host.commentAction(name + " ПОВОРАЧИВАЕТ ЛЫСИНУ К СВЕТУ! " + enemy.getName() + " ОСЛЕПЛЁН! -15 HP!");
+                enemy.takeDamage(15);
+                break;
+            case 4:
+                int codexDmg = 50;
+                enemy.takeDamage(codexDmg);
+                host.commentAction(name + " ОТКРЫВАЕТ КОДЕКС ЧЕРТА, СТАТЬЯ 666! " + enemy.getName() + " получает " + codexDmg + " урона!");
+                break;
+        }
+    }
+}
+
+// ========== ВЯЧЕСЛАВ - КРАСИВЫЙ ВЕДУЩИЙ ==========
+class Vyacheslav {
+    private static Vyacheslav instance;
+    private Random rand = new Random();
+
+    private Vyacheslav() {}
+
+    public static Vyacheslav getInstance() {
+        if (instance == null) instance = new Vyacheslav();
+        return instance;
+    }
+
+    public void startShow() {
+        System.out.println("═══════════════════════════════════════════════════════════════════════════════");
+        System.out.println("ВЯЧЕСЛАВ: Добрый вечер, дорогие зрители канала РОССИЯ 23!");
+        System.out.println("ВЯЧЕСЛАВ: Сегодня у нас БЕЗУМНЫЙ ТУРНИР ЗА НИЧЕГО!");
+        System.out.println("ВЯЧЕСЛАВ: Я — Вячеслав. Телевидущий Россия 23");
+        System.out.println("═══════════════════════════════════════════════════════════════════════════════\n");
+    }
+
+    public void announceFighters(Hero h1, Hero h2) {
+        System.out.println("\nВЯЧЕСЛАВ: В ЛЕВОМ УГЛУ: " + h1.getFullDescription());
+        if (h1 instanceof Vladimir) System.out.println("ВЯЧЕСЛАВ: лысый чёрт который ищет девушку ,ну максимум есть Павел...");
+        System.out.println("ВЯЧЕСЛАВ: В ПРАВОМ УГЛУ: " + h2.getFullDescription());
+        System.out.println("ВЯЧЕСЛАВ: БОЙ!\n");
+    }
+
+    public void commentAttack(Hero attacker, Hero defender, int damage, boolean hit) {
+        if (hit) {
+            String[] phrases = {
+                    attacker.getName() + " БЬЁТ " + defender.getName() + "! -" + damage + " HP!",
+                    "МОЩНЫЙ УДАР от " + attacker.getName() + "! " + defender.getName() + " теряет " + damage + " HP!",
+                    attacker.getName() + " ПОПАДАЕТ! -" + damage + " HP у " + defender.getName() + "!"
+            };
+            System.out.println("ВЯЧЕСЛАВ: " + phrases[rand.nextInt(phrases.length)]);
+        } else {
+            String[] phrases = {
+                    attacker.getName() + " ПРОМАХИВАЕТСЯ! ВОЗДУХ ПОВРЕЖДЁН!",
+                    "МИМО! " + defender.getName() + " УКЛОНЯЕТСЯ!",
+                    attacker.getName() + " БЬЁТ МИМО! НЕУДАЧА!"
+            };
+            System.out.println("ВЯЧЕСЛАВ: " + phrases[rand.nextInt(phrases.length)]);
+        }
+    }
+
+    public void commentAction(String action) { System.out.println("ВЯЧЕСЛАВ: " + action); }
+
+    public void showHP(Hero h1, Hero h2) {
+        System.out.println("СЧЁТ: " + h1.getName() + " [" + h1.getHealth() + "/" + h1.getMaxHealth() + "] | " +
+                h2.getName() + " [" + h2.getHealth() + "/" + h2.getMaxHealth() + "]");
+    }
+
+    public void announceWinner(Hero winner) {
+        System.out.println("\nВЯЧЕСЛАВ: ПОБЕЖДАЕТ " + winner.getName() + "!\n");
+    }
+
+    public void screenGlitch() {
+        System.out.println("\n*ЭКРАН МИГАЕТ И ГАСНЕТ*\n");
+    }
+
+    public void finalScene() {
+        System.out.println("═══════════════════════════════════════════════════════════════════════════════");
+        System.out.println("*В СТУДИЮ ПРИШЁЛ ВЛАДИМИР (ЛЫСЫЙ ЧЁРТ)*");
+        System.out.println("ВЛАДИМИР: Опять ты ху##ю снимаешь про меня! Лысый чёрт,cам ты черт ");
+        System.out.println("ВЛАДИМИР: Нам опять зашел черт!");
+        System.out.println("Наша студия должна прекратиь сьемки за что к нам пришел черт");
+        System.out.println("═══════════════════════════════════════════════════════════════════════════════\n");
+    }
+
+    public void commercial() {
+        System.out.println("═══════════════════════════════════════════════════════════════════════════════");
+        System.out.println("ХОТИТЕ ПОСМОТРЕТЬ КРУТЫЕ ВИДИО В 0982348-3192843-12984-2318421384-213843184-9К И КРУТОМ ЗВУКЕ?");
+        System.out.println("!!!!!!!!!!!!!!!ТОГДА ТЕБЕ НА КАНАЛ https://rutube.ru/channel/27111841/ !!!!!!!!!!!!!!!!");
+        System.out.println("═══════════════════════════════════════════════════════════════════════════════\n");
+    }
+}
+
+// ========== АРЕНА РОССИЯ 23 ==========
+class Russia23Arena {
+    private Vyacheslav host = Vyacheslav.getInstance();
+    private List<Hero> fighters = new ArrayList<>();
+    private Random rand = new Random();
+
+    public void addFighter(Hero hero) { fighters.add(hero); }
+
+    public void startTournament() {
+        host.startShow();
+
+        // РАУНД 1: Орк vs Эльф (до 3 ходов)
+        Hero orc = fighters.stream().filter(h -> h instanceof Orc).findFirst().orElse(null);
+        Hero elf = fighters.stream().filter(h -> h instanceof Elf).findFirst().orElse(null);
+
+        System.out.println("=== РАУНД 1: ОРК vs ЭЛЬФ ===");
+        host.announceFighters(orc, elf);
+        Hero winner1 = fight(orc, elf, 3);
+        host.announceWinner(winner1);
+        winner1.heal(30);
+
+        // РАУНД 2: Победитель vs Владимир (до 3 ходов)
+        Hero vladimir = fighters.stream().filter(h -> h instanceof Vladimir).findFirst().orElse(null);
+        vladimir.reset();
+
+        System.out.println("=== РАУНД 2: ФИНАЛ ЗА НИЧЕГО ===");
+        host.announceFighters(vladimir, winner1);
+        Hero winner2 = fight(vladimir, winner1, 3);
+        host.announceWinner(winner2);
+
+        // ФИНАЛ
+        host.screenGlitch();
+        host.finalScene();
+        host.commercial();
+    }
+
+    private Hero fight(Hero h1, Hero h2, int maxTurns) {
+        for (int turn = 1; turn <= maxTurns; turn++) {
+            System.out.println("\n--- Ход " + turn + " ---");
+
+            // 50% шанс использовать способность
+            if (rand.nextBoolean()) {
+                h1.useRoflAbility(h2);
+            } else {
+                h1.attack(h2);
+            }
+            host.showHP(h1, h2);
+            if (!h2.isAlive()) return h1;
+
+            if (rand.nextBoolean()) {
+                h2.useRoflAbility(h1);
+            } else {
+                h2.attack(h1);
+            }
+            host.showHP(h1, h2);
+            if (!h1.isAlive()) return h2;
+        }
+        return h1.getHealth() >= h2.getHealth() ? h1 : h2;
+    }
+}
+
+// ========== ЗАПУСК ==========
+class Main {
+    public static void main(String[] args) {
+        Russia23Arena arena = new Russia23Arena();
+        arena.addFighter(new Orc("Орк-Рандом"));
+        arena.addFighter(new Elf("Эльф Лучник"));
+        arena.addFighter(new Vladimir());
+        arena.startTournament();
+    }
+}
