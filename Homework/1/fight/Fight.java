@@ -46,7 +46,7 @@ abstract class RpgHero {
             return;
         }
 
-        // Логика защиты: обычная делит на 2, орк на кулаках — на 3
+        
         int finalDmg = isDefending ? (this instanceof RpgOrc && ((RpgOrc)this).isOnFists() ? dmg / 3 : dmg / 2) : dmg;
 
         if (isDefending && this instanceof RpgHuman) {
@@ -143,7 +143,7 @@ class RpgElf extends RpgHero {
         else if (c==2 && healPots>0) {
             int oldHp = this.health;
             this.health = Math.min(maxHealth, this.health + 25);
-            this.isDefending = true; // Фикс: хилка дает бонус защиты на ход, чтобы её не "сломали"
+            this.isDefending = true; 
             System.out.println("ВЯЧЕСЛАВ: Регенерация! HP: " + oldHp + " -> " + this.health);
             healPots--;
         }
@@ -154,7 +154,7 @@ class RpgElf extends RpgHero {
         } else if (c==4 && armPots>0) {
             int oldArm = this.armorShield;
             this.armorShield = Math.min(maxArmor, this.armorShield + 25);
-            this.isDefending = true; // Фикс: зарядка щита тоже дает защиту на ход
+            this.isDefending = true; 
             System.out.println("ВЯЧЕСЛАВ: Щит усилен! Маг. Щит: " + oldArm + " -> " + this.armorShield);
             armPots--;
         }
