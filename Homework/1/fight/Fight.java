@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.util.Random;
 
-// ========== БАЗОВЫЙ КЛАСС (БЕЗ ИЗМЕНЕНИЙ ДИЗАЙНА) ==========
+// ========== БАЗОВЫЙ КЛАСС  ==========
 abstract class RpgHero {
     protected final String name;
     protected int health;
@@ -78,7 +78,7 @@ abstract class RpgHero {
     public abstract String getStatus();
 }
 
-// ========== РЫЦАРЬ (ДЕЙСТВИЯ ЗАКРЕПЛЕНЫ) ==========
+// ========== Dark Souls (Человек) ==========
 class RpgHuman extends RpgHero {
     public RpgHuman(String name) { super(name, 110, 50); }
     @Override protected void resetSpecificResources() {}
@@ -110,7 +110,7 @@ class RpgHuman extends RpgHero {
     public String getStatus() { return "HP: " + health + " | Броня: " + armorShield; }
 }
 
-// ========== ЭЛЬФ (ФИКС ХИЛКИ И ЩИТА) ==========
+// ========== ЭЛЬФ  ==========
 class RpgElf extends RpgHero {
     private int dmgPots, healPots, imbaPots, armPots;
     public RpgElf(String name) { super(name, 85, 25); resetSpecificResources(); }
@@ -168,7 +168,7 @@ class RpgElf extends RpgHero {
     public String getStatus() { return "HP: " + health + " | Маг. Щит: " + armorShield + " | Зелья: " + (dmgPots+healPots+imbaPots+armPots); }
 }
 
-// ========== ОРК (ДЕЙСТВИЯ ЗАКРЕПЛЕНЫ) ==========
+// ========== ОРК  ==========
 class RpgOrc extends RpgHero {
     private int mega, arrows, dagger;
     public RpgOrc(String name) { super(name, 150, 20); resetSpecificResources(); }
