@@ -209,7 +209,7 @@ class RpgOrc extends RpgHero {
 public class Fight {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in); Random r = new Random();
-        System.out.println("ВЯЧЕСЛАВ: РОССИЯ 23! ВЫБЕРИ БОЙЦА:");
+        System.out.println("ВЯЧЕСЛАВ: Здравствуйте ,свами я телеведущий РОССИЯ 23! Меня зовут Вячяеслав,Мы играем игру СуперТрипер УльтраБитМегаФит3000фунтнагибатор ,короче игра,теперь, ВЫБЕРИ БОЙЦА:");
         System.out.println("1.Рыцарь (Dark Souls) | 2.Эльф (Зелья) | 3.Орк (Пушки)");
 
         int choice = sc.nextInt();
