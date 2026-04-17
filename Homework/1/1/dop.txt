@@ -1,0 +1,29 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class dop {
+    public static void main(String [] args) {
+        int n = 10;
+        System.out.println(getFibonacciList(n));
+    }
+    public static List <Integer> getFibonacciList (int n) {  // Инициализируем список-аккумулятор
+        List <Integer> list = new ArrayList<>(); // Запускаем рекурсию
+        generate (n, list);
+        return list;
+    }
+    private static void generate (int n, List <Integer> list) { // Добавляем базовые значения (0 и 1) или сумму двух последних элементов
+
+        if (list.isEmpty()) {
+            list.add(0);
+        } else if (list.size() == 1) {
+            list.add(1);
+        } else {
+            int nextValue = list.get(list.size() - 1) + list.get(list.size () -2);
+            list.add(nextValue);
+        }
+        // продолжаем, пока не наберем N элементов
+        if (list.size() < n) {
+            generate(n, list);
+        }
+    }
+}
