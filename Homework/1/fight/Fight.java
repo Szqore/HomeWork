@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.util.Random;
 
+// ========== БАЗОВЫЙ КЛАСС (БЕЗ ИЗМЕНЕНИЙ ДИЗАЙНА) ==========
 abstract class RpgHero {
     protected final String name;
     protected int health;
@@ -23,6 +24,14 @@ abstract class RpgHero {
     public boolean isAlive() { return health > 0; }
     public void prepareTurn() { this.isDefending = false; }
 
+    public void fullRestoration() {
+        this.health = this.maxHealth;
+        this.armorShield = this.maxArmor;
+        resetSpecificResources();
+    }
+
+    protected abstract void resetSpecificResources();
+
     public void setDefending(boolean state) {
         this.isDefending = state;
         if (state && this instanceof RpgElf) {
@@ -32,12 +41,12 @@ abstract class RpgHero {
     }
 
     public void takeDamage(int dmg, RpgHero attacker) {
-        // ПЕРЕКАТ РЫЦАРЯ
         if (isDefending && this instanceof RpgHuman && rand.nextInt(100) < 30) {
             System.out.println("ВЯЧЕСЛАВ: ОПА! ПЕРЕКАТ! Рыцарь полностью уклонился от удара!");
             return;
         }
 
+        // Логика защиты: обычная делит на 2, орк на кулаках — на 3
         int finalDmg = isDefending ? (this instanceof RpgOrc && ((RpgOrc)this).isOnFists() ? dmg / 3 : dmg / 2) : dmg;
 
         if (isDefending && this instanceof RpgHuman) {
@@ -69,9 +78,10 @@ abstract class RpgHero {
     public abstract String getStatus();
 }
 
-// ========== РЫЦАРЬ (DARK SOULS) ==========
+// ========== РЫЦАРЬ (ДЕЙСТВИЯ ЗАКРЕПЛЕНЫ) ==========
 class RpgHuman extends RpgHero {
     public RpgHuman(String name) { super(name, 110, 50); }
+    @Override protected void resetSpecificResources() {}
     @Override
     public void playerAction(RpgHero enemy) {
         System.out.println("ВЫБЕРИ УДАР:");
@@ -100,17 +110,23 @@ class RpgHuman extends RpgHero {
     public String getStatus() { return "HP: " + health + " | Броня: " + armorShield; }
 }
 
-// ========== ЭЛЬФ (ЗЕЛЬЯ) ==========
+// ========== ЭЛЬФ (ФИКС ХИЛКИ И ЩИТА) ==========
 class RpgElf extends RpgHero {
-    private int dmgPots = 3, healPots = 2, imbaPots = 3, armPots = 2;
-    public RpgElf(String name) { super(name, 85, 25); }
+    private int dmgPots, healPots, imbaPots, armPots;
+    public RpgElf(String name) { super(name, 85, 25); resetSpecificResources(); }
+
+    @Override
+    protected void resetSpecificResources() {
+        dmgPots = 3; healPots = 2; imbaPots = 3; armPots = 2;
+    }
+
     public boolean noPots() { return dmgPots<=0 && healPots<=0 && imbaPots<=0 && armPots<=0; }
 
     @Override
     public void playerAction(RpgHero enemy) {
         if (noPots()) {
             System.out.println("ВЯЧЕСЛАВ: Зелий нет! 1. ХАРАКИРИ | 2. Ждать смерти");
-            if (scanner.nextInt() == 1) { health = 0; System.out.println("ВЯЧЕСЛАВ: ХАРАКИРИ!"); }
+            if (scanner.nextInt() == 1) { this.health = 0; System.out.println("ВЯЧЕСЛАВ: ХАРАКИРИ!"); }
             return;
         }
         System.out.println("ВЫБЕРИ ЗЕЛЬЕ:");
@@ -120,13 +136,28 @@ class RpgElf extends RpgHero {
         System.out.println("4. Восстановление щита (25 ед, ост: " + armPots + ")");
 
         int c = scanner.nextInt();
-        if (c==1 && dmgPots>0) { System.out.println("ВЯЧЕСЛАВ: Ты атаковал зельем урона!"); enemy.takeDamage(25, this); dmgPots--; }
-        else if (c==2 && healPots>0) { health = Math.min(maxHealth, health+25); System.out.println("ВЯЧЕСЛАВ: Ты выпил хилку!"); healPots--; }
+        if (c==1 && dmgPots>0) {
+            System.out.println("ВЯЧЕСЛАВ: Ты атаковал зельем урона!");
+            enemy.takeDamage(25, this); dmgPots--;
+        }
+        else if (c==2 && healPots>0) {
+            int oldHp = this.health;
+            this.health = Math.min(maxHealth, this.health + 25);
+            this.isDefending = true; // Фикс: хилка дает бонус защиты на ход, чтобы её не "сломали"
+            System.out.println("ВЯЧЕСЛАВ: Регенерация! HP: " + oldHp + " -> " + this.health);
+            healPots--;
+        }
         else if (c==3 && imbaPots>0) {
-            if (rand.nextInt(100)<20) { health-=35; System.out.println("ВЯЧЕСЛАВ: ТЫ АТАКОВАЛ... ОЙ! ВЗРЫВ В РУКАХ!"); }
+            if (rand.nextInt(100)<20) { this.health-=35; System.out.println("ВЯЧЕСЛАВ: ТЫ АТАКОВАЛ... ОЙ! ВЗРЫВ В РУКАХ!"); }
             else { System.out.println("ВЯЧЕСЛАВ: Ты атаковал ИМБА-ЗЕЛЬЕМ!"); enemy.takeDamage(45, this); }
             imbaPots--;
-        } else if (c==4 && armPots>0) { armorShield = Math.min(maxArmor, armorShield+25); System.out.println("ВЯЧЕСЛАВ: Щит заряжен!"); armPots--; }
+        } else if (c==4 && armPots>0) {
+            int oldArm = this.armorShield;
+            this.armorShield = Math.min(maxArmor, this.armorShield + 25);
+            this.isDefending = true; // Фикс: зарядка щита тоже дает защиту на ход
+            System.out.println("ВЯЧЕСЛАВ: Щит усилен! Маг. Щит: " + oldArm + " -> " + this.armorShield);
+            armPots--;
+        }
     }
     @Override
     public void enemyAi(RpgHero player) {
@@ -137,10 +168,16 @@ class RpgElf extends RpgHero {
     public String getStatus() { return "HP: " + health + " | Маг. Щит: " + armorShield + " | Зелья: " + (dmgPots+healPots+imbaPots+armPots); }
 }
 
-// ========== ОРК (ПУШКИ) ==========
+// ========== ОРК (ДЕЙСТВИЯ ЗАКРЕПЛЕНЫ) ==========
 class RpgOrc extends RpgHero {
-    private int mega = 3, arrows = 4, dagger = 2;
-    public RpgOrc(String name) { super(name, 150, 20); }
+    private int mega, arrows, dagger;
+    public RpgOrc(String name) { super(name, 150, 20); resetSpecificResources(); }
+
+    @Override
+    protected void resetSpecificResources() {
+        mega = 3; arrows = 4; dagger = 2;
+    }
+
     public boolean isOnFists() { return mega <= 0 && arrows <= 0 && dagger <= 0; }
 
     @Override
@@ -150,10 +187,9 @@ class RpgOrc extends RpgHero {
         if (arrows > 0) System.out.println("2. Лук со стрелами (ост: " + arrows + ")");
         if (dagger > 0) System.out.println("3. Кинжал (ост: " + dagger + ")");
         if (isOnFists()) System.out.println("4. КУЛАКИ (Защита x3!)");
-
         int c = scanner.nextInt();
         if (c == 1 && mega > 0) {
-            if (rand.nextInt(100) < 25) { System.out.println("ВЯЧЕСЛАВ: Ты атаковал... ОЙ! ПУШКА ВЗОРВАЛАСЬ!"); health -= 40; }
+            if (rand.nextInt(100) < 25) { this.health -= 40; System.out.println("ВЯЧЕСЛАВ: ПУШКА ВЗОРВАЛАСЬ!"); }
             else { System.out.println("ВЯЧЕСЛАВ: Ты атаковал из Мега-пушки!"); enemy.takeDamage(55, this); }
             mega--;
         } else if (c == 2 && arrows > 0) { System.out.println("ВЯЧЕСЛАВ: Ты атаковал из лука!"); enemy.takeDamage(20, this); arrows--; }
@@ -168,33 +204,52 @@ class RpgOrc extends RpgHero {
     @Override
     public String getStatus() { return "HP: " + health + " | Броня: " + armorShield + (isOnFists() ? " | [КУЛАКИ]" : ""); }
 }
-// ========== Main ==========
+
+// ========== ГЛАВНЫЙ КЛАСС (ТУРНИР) ==========
 public class Fight {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in); Random r = new Random();
         System.out.println("ВЯЧЕСЛАВ: РОССИЯ 23! ВЫБЕРИ БОЙЦА:");
         System.out.println("1.Рыцарь (Dark Souls) | 2.Эльф (Зелья) | 3.Орк (Пушки)");
-        int c = sc.nextInt();
-        RpgHero p = (c == 1) ? new RpgHuman("Игрок") : (c == 2) ? new RpgElf("Игрок") : new RpgOrc("Игрок");
-        RpgHero e; int ec; do { ec = r.nextInt(3) + 1; } while (ec == c);
-        e = (ec == 1) ? new RpgHuman("Бот-Рыцарь") : (ec == 2) ? new RpgElf("Бот-Эльф") : new RpgOrc("Бот-Орк");
-        System.out.println("\nВЯЧЕСЛАВ: Твой противник — " + e.getName() + "!");
 
-        while (p.isAlive() && e.isAlive()) {
-            System.out.println("\n================================");
-            System.out.println("ТЫ:    " + p.getStatus());
-            System.out.println("ВРАГ:  " + e.getStatus());
-            System.out.println("================================");
-            p.prepareTurn();
-            System.out.println("ХОД ИГРОКА: 1. Действие | 2. Защита");
-            if (sc.nextInt() == 1) p.playerAction(e);
-            else { p.setDefending(true); System.out.println("ВЯЧЕСЛАВ: Ты выбрал защиту!"); }
-            if (!e.isAlive()) break;
-            System.out.println("\nВЯЧЕСЛАВ: Противник атакует...");
-            e.prepareTurn();
-            if (r.nextInt(10) < 2) { e.setDefending(true); System.out.println("ВЯЧЕСЛАВ: Противник выбрал защиту!"); }
-            else e.enemyAi(p);
+        int choice = sc.nextInt();
+        RpgHero p = (choice == 1) ? new RpgHuman("Игрок") : (choice == 2) ? new RpgElf("Игрок") : new RpgOrc("Игрок");
+
+        RpgHero[] enemies = new RpgHero[2];
+        int idx = 0;
+        if (choice != 1) enemies[idx++] = new RpgHuman("Бот-Рыцарь");
+        if (choice != 2) enemies[idx++] = new RpgElf("Бот-Эльф");
+        if (choice != 3) enemies[idx++] = new RpgOrc("Бот-Орк");
+
+        for (RpgHero e : enemies) {
+            p.fullRestoration();
+            System.out.println("\nВЯЧЕСЛАВ: Твой следующий противник — " + e.getName() + "!");
+
+            while (p.isAlive() && e.isAlive()) {
+                System.out.println("\n================================");
+                System.out.println("ТЫ:    " + p.getStatus());
+                System.out.println("ВРАГ:  " + e.getStatus());
+                System.out.println("================================");
+
+                p.prepareTurn();
+                System.out.println("ХОД ИГРОКА: 1. Действие | 2. Защита");
+                if (sc.nextInt() == 1) p.playerAction(e);
+                else { p.setDefending(true); System.out.println("ВЯЧЕСЛАВ: Ты выбрал защиту!"); }
+
+                if (!e.isAlive()) break;
+
+                System.out.println("\nВЯЧЕСЛАВ: Противник атакует...");
+                e.prepareTurn();
+                if (r.nextInt(10) < 2) {
+                    e.setDefending(true);
+                    System.out.println("ВЯЧЕСЛАВ: Противник выбрал защиту!");
+                } else {
+                    e.enemyAi(p);
+                }
+            }
+            if (!p.isAlive()) { System.out.println("\nВЯЧЕСЛАВ: YOU DIED. ГГ!"); return; }
+            System.out.println("\nВЯЧЕСЛАВ: ПОБЕДА В РАУНДЕ! Готовимся к следующему...");
         }
-        System.out.println(p.isAlive() ? "\nВЯЧЕСЛАВ: ПОЗДРАВЛЮ С ПОБЕДОЙ ! ТЕПЕРЬ ТЫ  СМОЖЕШЬ ВЕРНУТСЯ СВОЕЙ ГЕЙНАЛ КОМПАНИЮ И ОТДОХНУТЬ!" : "\nВЯЧЕСЛАВ: YOU DIED. ГГ!");
+        System.out.println("\nВЯЧЕСЛАВ: ПОЗДРАВЛЮ С ПОБЕДОЙ ! ТЕПЕРЬ ТЫ СМОЖЕШЬ ВЕРНУТСЯ СВОЕЙ ГЕЙНАЛ КОМПАНИЮ И ОТДОХНУТЬ!");
     }
 }
