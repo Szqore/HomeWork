@@ -1,8 +1,8 @@
-import java.util.Scanner;
+import java.util.Scanner; //task 19
 
-class MatrixOperations19 {
+public class MatrixOperations {
 
-    public static void printMatrix(int[][] matrix) {
+    public static void printMatrix(int[][] matrix) { // выводит матрицу с форматированием по 5 символов
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
                 System.out.printf("%5d", matrix[i][j]);
@@ -11,7 +11,7 @@ class MatrixOperations19 {
         }
     }
 
-    public static int sumOfDigits(int number) {
+    public static int sumOfDigits(int number) { // вычисляет сумму цифр числа (по модулю)
         int sum = 0;
         number = Math.abs(number);
         while (number > 0) {
@@ -21,7 +21,7 @@ class MatrixOperations19 {
         return sum;
     }
 
-    public static int countNumbersOnAntiDiagonal(int[][] matrix, int sum0) {
+    public static int countNumbersOnAntiDiagonal(int[][] matrix, int sum0) { // считает элементы побочной диагонали, у которых сумма цифр меньше sum0
         int count = 0;
         int n = matrix.length;
         for (int i = 0; i < n; i++) {
@@ -33,7 +33,7 @@ class MatrixOperations19 {
         return count;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { //читает SUM0, выводит результат
         Scanner scanner = new Scanner(System.in);
 
         int[][] matrix = {
