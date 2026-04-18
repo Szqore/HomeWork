@@ -86,7 +86,7 @@ class RpgHuman extends RpgHero {
     public void playerAction(RpgHero enemy) {
         System.out.println("ВЫБЕРИ УДАР:");
         System.out.println("1. Обычный удар (25 ед)");
-        System.out.println("2. СИЛОВОЙ ВЫПАД (40 ед, РИСК!)");
+        System.out.println("2. Кувырок (40 ед, РИСК!)");
         int choice = scanner.nextInt();
         if (choice == 2) {
             if (enemy.isDefending) {
@@ -131,8 +131,8 @@ class RpgElf extends RpgHero {
         }
         System.out.println("ВЫБЕРИ ЗЕЛЬЕ:");
         System.out.println("1. Зелье Урона (25 ед, ост: " + dmgPots + ")");
-        System.out.println("2. Зелье ХП (25 ед, ост: " + healPots + ")");
-        System.out.println("3. ИМБА-ЗЕЛЬЕ (45 ед, РИСК, ост: " + imbaPots + ")");
+        System.out.println("2. Зелье Банкате (25 ед, ост: " + healPots + ")");
+        System.out.println("3. взрывное-зелье (45 ед, РИСК может взорваться, ост: " + imbaPots + ")");
         System.out.println("4. Восстановление щита (25 ед, ост: " + armPots + ")");
 
         int c = scanner.nextInt();
@@ -183,7 +183,7 @@ class RpgOrc extends RpgHero {
     @Override
     public void playerAction(RpgHero enemy) {
         System.out.println("ВЫБЕРИ ОРУЖИЕ:");
-        if (mega > 0) System.out.println("1. Мега-пушка (ост: " + mega + ")");
+        if (mega > 0) System.out.println("1. Пистолет с порохом (ост: " + mega + ")");
         if (arrows > 0) System.out.println("2. Лук со стрелами (ост: " + arrows + ")");
         if (dagger > 0) System.out.println("3. Кинжал (ост: " + dagger + ")");
         if (isOnFists()) System.out.println("4. КУЛАКИ (Защита x3!)");
