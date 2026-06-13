@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
   public static void main(String[] args) {
-    System.out.println("=== ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ ЯНДЕКС.АФИША ===");
+    System.out.println("=== ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ НЕДОЯНДЕКС.АФИША ===");
     FileRepository.loadDataFromDisk();
 
     // Запуск фонового планировщика (шедулера) для контроля времени броней
@@ -25,7 +25,7 @@ public class Main {
       // цикл авторизаций
       while (currentToken == null && !isGuest) {
         System.out.println("\n=============================================");
-        System.out.println("   ДОБРО ПОЖАЛОВАТЬ НА ЯНДЕКС.АФИШУ");
+        System.out.println("   ДОБРО ПОЖАЛОВАТЬ НА НЕДОЯНДЕКС.АФИШУ");
         System.out.println("=============================================");
         System.out.println("1. Войти под своей учетной записью");
         System.out.println("2. Зарегистрироваться (Покупатель / Организатор)");
