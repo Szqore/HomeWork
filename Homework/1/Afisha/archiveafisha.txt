@@ -1,0 +1,5 @@
+ticket_1;test1;обычный;2000;50;0;[SOLD OUT]
+ticket_1;test_1;VIP/Обычный;5000;50;0;[SOLD OUT]
+ticket_3_usual;test3;Обычный;50;50;0;[SOLD OUT]
+ticket_3_vip;test3;VIP;100;25;0;[SOLD OUT]
+event_1;ljjedrnfv;500;0;50;0;0;0;[SOLD OUT]

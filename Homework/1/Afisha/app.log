@@ -1,0 +1,108 @@
+[2026-06-13 10:04:54] [INFO] Приложение запущено
+[2026-06-13 10:05:01] [GUEST_LOGIN] Гость вошел с email: rehnbprejb@gmail.com
+[2026-06-13 10:05:12] [LOGOUT] Пользователь rehnbprejb@gmail.com вышел из системы
+[2026-06-13 10:05:21] [REG_SUCCESS] Зарегистрирован новый пользователь: rpibjn@gmail.com (роль: ORGANIZER)
+[2026-06-13 10:05:47] [EVENT_CREATED] Организатор rpibjn@gmail.com создал событие: test_1
+[2026-06-13 10:06:02] [LOGOUT] Пользователь rpibjn@gmail.com вышел из системы
+[2026-06-13 10:06:06] [GUEST_LOGIN] Гость вошел с email: lerfkjb@
+[2026-06-13 10:06:18] [PURCHASE_SUCCESS] lerfkjb@ купил 0 билет(ов) на test_1, номер билета: 1001
+[2026-06-13 10:09:09] [INFO] Приложение запущено
+[2026-06-13 10:09:19] [GUEST_LOGIN] Гость вошел с email: eovobj@gmail.com
+[2026-06-13 10:09:49] [ARCHIVE] Событие test_1 распродано и перемещено в архив
+[2026-06-13 10:09:49] [PURCHASE_SUCCESS] eovobj@gmail.com купил 50 билет(ов) на test_1, номер билета: 1001
+[2026-06-13 10:10:06] [LOGOUT] Пользователь eovobj@gmail.com вышел из системы
+[2026-06-13 10:10:11] [REG_FAIL] Попытка регистрации с недопустимым email: pikfejv@g
+[2026-06-13 10:10:19] [REG_SUCCESS] Зарегистрирован новый пользователь: perivj@gmail.com (роль: ORGANIZER)
+[2026-06-13 10:10:25] [STATISTICS] Организатор запросил статистику: продано=100, прошли=0, процент=0.0
+[2026-06-13 10:10:57] [EVENT_CREATED] Организатор perivj@gmail.com создал событие: test3 (Обычный и VIP)
+[2026-06-13 10:11:06] [LOGOUT] Пользователь perivj@gmail.com вышел из системы
+[2026-06-13 10:11:21] [REG_SUCCESS] Зарегистрирован новый пользователь: peijevpj@gmail.com (роль: PARTICIPANT)
+[2026-06-13 10:13:18] [LOGOUT] Пользователь peijevpj@gmail.com вышел из системы
+[2026-06-13 10:13:29] [GUEST_LOGIN] Гость вошел с email: pjrej@gmail.com
+[2026-06-13 10:14:49] [INFO] Приложение запущено
+[2026-06-13 10:14:53] [GUEST_LOGIN] Гость вошел с email: ervgojhn@gmail.com
+[2026-06-13 10:15:10] [INFO] Приложение запущено
+[2026-06-13 10:15:15] [GUEST_LOGIN] Гость вошел с email: e2vgj@gmail.com
+[2026-06-13 10:15:20] [LOGOUT] Пользователь e2vgj@gmail.com вышел из системы
+[2026-06-13 10:15:26] [REG_SUCCESS] Зарегистрирован новый пользователь: oerwkobjv@gmail.com (роль: ORGANIZER)
+[2026-06-13 10:15:47] [EVENT_CREATED] Организатор oerwkobjv@gmail.com создал событие: gjerj (Обычный и VIP)
+[2026-06-13 10:16:48] [LOGOUT] Пользователь oerwkobjv@gmail.com вышел из системы
+[2026-06-13 10:16:53] [GUEST_LOGIN] Гость вошел с email: evj@gmail.com
+[2026-06-13 10:16:57] [ARCHIVE] Событие test3 распродано и перемещено в архив
+[2026-06-13 10:16:57] [PURCHASE_SUCCESS] evj@gmail.com купил 50 билет(ов) на test3, номер билета: 1001
+[2026-06-13 10:17:03] [ARCHIVE] Событие test3 распродано и перемещено в архив
+[2026-06-13 10:17:03] [PURCHASE_SUCCESS] evj@gmail.com купил 25 билет(ов) на test3, номер билета: 1002
+[2026-06-13 10:17:59] [INFO] Приложение запущено
+[2026-06-13 10:18:04] [GUEST_LOGIN] Гость вошел с email: rwobujh@gmail.com
+[2026-06-13 10:18:10] [LOGOUT] Пользователь rwobujh@gmail.com вышел из системы
+[2026-06-13 10:18:18] [REG_SUCCESS] Зарегистрирован новый пользователь: p2ebvj@gmail.com (роль: ORGANIZER)
+[2026-06-13 10:18:35] [EVENT_CREATED] Организатор p2ebvj@gmail.com создал событие: ljjedrnfv
+[2026-06-13 10:18:48] [LOGOUT] Пользователь p2ebvj@gmail.com вышел из системы
+[2026-06-13 10:18:55] [REG_SUCCESS] Зарегистрирован новый пользователь: wrpekvj@gmail.com (роль: PARTICIPANT)
+[2026-06-13 10:23:10] [INFO] Приложение запущено
+[2026-06-13 10:23:20] [GUEST_LOGIN] Гость вошел с email: peigvj@gmail.com
+[2026-06-13 10:23:32] [PURCHASE_SUCCESS] peigvj@gmail.com купил 2 USUAL билет(ов) на ljjedrnfv, номер билета: 1001
+[2026-06-13 10:23:43] [LOGOUT] Пользователь peigvj@gmail.com вышел из системы
+[2026-06-13 10:23:48] [GUEST_LOGIN] Гость вошел с email: peigvj@gmail.com
+[2026-06-13 10:24:04] [CHECKIN_FAIL] Не найден билет с номером 1001
+[2026-06-13 10:24:10] [CHECKIN_FAIL] Не найден билет с номером №1001
+[2026-06-13 10:26:17] [INFO] Приложение запущено
+[2026-06-13 10:26:24] [GUEST_LOGIN] Гость вошел с email: EJB@gmail.com
+[2026-06-13 10:26:37] [PURCHASE_SUCCESS] EJB@gmail.com купил 3 USUAL билет(ов) на ljjedrnfv, номер билета: ZEY3S
+[2026-06-13 10:26:47] [CHECKIN_FAIL] Не найден билет с номером ZEY3S
+[2026-06-13 10:27:45] [INFO] Приложение запущено
+[2026-06-13 10:27:56] [GUEST_LOGIN] Гость вошел с email: ERvbhn@gmail.com
+[2026-06-13 10:28:05] [PURCHASE_SUCCESS] ERvbhn@gmail.com купил 4 USUAL билет(ов) на ljjedrnfv, номер билета: 187WE
+[2026-06-13 10:28:15] [CHECKIN_FAIL] Не найден билет с номером 187WE
+[2026-06-13 10:28:33] [ARCHIVE] Событие ljjedrnfv полностью распродано и перемещено в архив
+[2026-06-13 10:28:33] [PURCHASE_SUCCESS] ERvbhn@gmail.com купил 41 USUAL билет(ов) на ljjedrnfv, номер билета: NFP3B
+[2026-06-13 10:28:35] [LOGOUT] Пользователь ERvbhn@gmail.com вышел из системы
+[2026-06-13 10:28:42] [REG_SUCCESS] Зарегистрирован новый пользователь: peribn@gmail.com (роль: ORGANIZER)
+[2026-06-13 10:29:10] [EVENT_CREATED] Организатор peribn@gmail.com создал событие: test4
+[2026-06-13 10:29:20] [LOGOUT] Пользователь peribn@gmail.com вышел из системы
+[2026-06-13 10:29:24] [GUEST_LOGIN] Гость вошел с email: wpqeibvh@gmail.com
+[2026-06-13 10:29:36] [PURCHASE_SUCCESS] wpqeibvh@gmail.com купил 1 VIP билет(ов) на test4, номер билета: 0XJT1
+[2026-06-13 10:29:41] [CHECKIN_FAIL] Не найден билет с номером 0XJT1
+[2026-06-13 10:30:30] [LOGOUT] Пользователь wpqeibvh@gmail.com вышел из системы
+[2026-06-13 10:30:37] [REG_SUCCESS] Зарегистрирован новый пользователь: уjbve@gmail.com (роль: PARTICIPANT)
+[2026-06-13 10:30:44] [PURCHASE_SUCCESS] уjbve@gmail.com купил 3 USUAL билет(ов) на test4, номер билета: 9Z8TG
+[2026-06-13 10:30:57] [CHECKIN_FAIL] Не найден билет с номером 9Z8TG
+[2026-06-13 10:33:39] [INFO] Приложение запущено
+[2026-06-13 10:33:45] [GUEST_LOGIN] Гость вошел с email: rewvj@gmail.com
+[2026-06-13 10:33:59] [PURCHASE_SUCCESS] rewvj@gmail.com купил 3 USUAL билет(ов) на test4, номер билета: N56BI
+[2026-06-13 10:34:10] [CHECKIN_SUCCESS] Проход гостя по билету N56BI для rewvj@gmail.com
+[2026-06-13 10:34:15] [LOGOUT] Пользователь rewvj@gmail.com вышел из системы
+[2026-06-13 10:34:26] [REG_SUCCESS] Зарегистрирован новый пользователь: epkbnjejbn@gmail.com (роль: PARTICIPANT)
+[2026-06-13 10:34:31] [PURCHASE_SUCCESS] epkbnjejbn@gmail.com купил 1 VIP билет(ов) на test4, номер билета: TY06N
+[2026-06-13 10:37:06] [INFO] Приложение запущено
+[2026-06-13 10:37:18] [GUEST_LOGIN] Гость вошел с email: rewvj@gmail.com
+[2026-06-13 10:37:27] [PURCHASE_SUCCESS] rewvj@gmail.com купил 2 USUAL билет(ов) на test4, номер билета: EZ318
+[2026-06-13 10:37:38] [CHECKIN_SUCCESS] Проход по билету EZ318 для rewvj@gmail.com
+[2026-06-13 10:37:42] [LOGOUT] Пользователь rewvj@gmail.com вышел из системы
+[2026-06-13 10:38:01] [REG_SUCCESS] Зарегистрирован новый пользователь: test1Person@mail.ru (роль: PARTICIPANT)
+[2026-06-13 10:38:08] [PURCHASE_SUCCESS] test1Person@mail.ru купил 1 VIP билет(ов) на test4, номер билета: PEO9U
+[2026-06-13 10:38:18] [CHECKIN_SUCCESS] Проход по билету PEO9U для test1Person@mail.ru
+[2026-06-13 10:38:27] [LOGOUT] Пользователь test1Person@mail.ru вышел из системы
+[2026-06-13 10:38:44] [REG_SUCCESS] Зарегистрирован новый пользователь: test2organ@gmail.com (роль: ORGANIZER)
+[2026-06-13 10:39:04] [EVENT_CREATED] Организатор test2organ@gmail.com создал событие: lolokk
+[2026-06-13 10:39:07] [LOGOUT] Пользователь test2organ@gmail.com вышел из системы
+[2026-06-13 10:39:39] [LOGIN] Пользователь test1Person@mail.ru вошел в систему
+[2026-06-13 10:39:50] [PURCHASE_SUCCESS] test1Person@mail.ru купил 5 VIP билет(ов) на lolokk, номер билета: HKEFE
+[2026-06-13 10:40:03] [CHECKIN_SUCCESS] Проход по билету HKEFE для test1Person@mail.ru
+[2026-06-13 10:40:05] [LOGOUT] Пользователь test1Person@mail.ru вышел из системы
+[2026-06-13 10:40:49] [LOGIN] Пользователь test2organ@gmail.com вошел в систему
+[2026-06-13 10:41:07] [STATISTICS] Организатор запросил статистику: продано=191, прошли=8, процент=4.18848167539267
+[2026-06-13 10:42:09] [LOGOUT] Пользователь test2organ@gmail.com вышел из системы
+[2026-06-13 10:42:18] [GUEST_LOGIN] Гость вошел с email: ve@gmail.com
+[2026-06-13 10:42:26] [PURCHASE_SUCCESS] ve@gmail.com купил 10 VIP билет(ов) на lolokk, номер билета: DYVQD
+[2026-06-13 10:42:30] [LOGOUT] Пользователь ve@gmail.com вышел из системы
+[2026-06-13 10:42:43] [REG_SUCCESS] Зарегистрирован новый пользователь: test1Person@mail.ru (роль: PARTICIPANT)
+[2026-06-13 10:46:03] [INFO] Приложение запущено
+[2026-06-13 10:46:23] [GUEST_LOGIN] Гость вошел с email: ghost1@gmail.com
+[2026-06-13 10:46:34] [LOGOUT] Пользователь ghost1@gmail.com вышел из системы
+[2026-06-13 10:46:56] [REG_SUCCESS] Зарегистрирован новый пользователь: test1Person@mail.ru (роль: PARTICIPANT)
+[2026-06-13 10:47:35] [BOOKING_SUCCESS] Пользователь test1Person@mail.ru забронировал 2 USUAL билетов на test4
+[2026-06-13 10:47:46] [PAYMENT_SUCCESS] Оплачен заказ order_1781322455803_4518 пользователем test1Person@mail.ru, билет №UX46H
+[2026-06-13 10:47:55] [CHECKIN_SUCCESS] Проход по билету UX46H для test1Person@mail.ru
+[2026-06-13 10:49:15] [INFO] Приложение запущено
+[2026-06-13 10:49:30] [REG_FAIL] Попытка регистрации с существующим email: уjbve@gmail.com
